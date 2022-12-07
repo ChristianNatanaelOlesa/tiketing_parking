@@ -288,7 +288,7 @@
                   <div class="form-group row">
                     <label for="jam_keluar_kendaraan" class="col-sm-4 col-form-label">Jam Keluar</label>
                     <div class="col-sm-8">
-                      <input class="form-control" type="datetime-local" name="jam_keluar" id="jam_keluar_kendaraan" step="1" required>
+                      <input class="form-control" type="datetime-local" name="jam_keluar" id="jam_keluar_kendaraan" step="1" value="<?php echo $current_time; ?>" required>
                     </div>
                   </div>
 
