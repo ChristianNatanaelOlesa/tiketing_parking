@@ -93,7 +93,7 @@
 	            <td class="tabel_print" style="text-align: center; vertical-align: middle;"><?php echo strtoupper($data_list['kode_huruf_awal']." ".$data_list['kode_nomor']." ".$data_list['kode_huruf_akhir']) ?></td>
 	            <td class="tabel_print" style="text-align: center; vertical-align: middle;"><?php if ($data_list['jam_masuk'] == '0000-00-00 00:00:00') {echo "-";} else {echo $data_list['jam_masuk']; } ?></td>
 	            <td class="tabel_print" style="text-align: center; vertical-align: middle;"><?php if ($data_list['jam_keluar'] == '0000-00-00 00:00:00') {echo "-";} else {echo $data_list['jam_keluar']; } ?></td>
-	            <td class="tabel_print" style="text-align: center; vertical-align: middle;"><?php if ($data_list['durasi'] == '00:00:00') {echo "-";} else {echo $data_list['durasi']; } ?></td>
+	            <td class="tabel_print" style="text-align: center; vertical-align: middle;"><?php if ($data_list['durasi'] == '') {echo "-";} else {echo $data_list['durasi']; } ?></td>
 	            <td class="tabel_print" style="text-align: center; vertical-align: middle;"><?php if ($data_list['tarif_parkir'] == 0) {echo "-";} else {echo rupiah($data_list['tarif_parkir']); } ?></td>
 	          </tr>
 	          <?php   

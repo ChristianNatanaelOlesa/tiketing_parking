@@ -162,7 +162,7 @@ if(isset($_POST['simpan_user'])) {
     $update_tiket_keluar  = mysqli_query($mysqli, $sql_tiket_keluar); 
 
     if( $update_tiket_keluar ) {
-        $_SESSION['pesan'] = "Behrasil Memproses Tiket Keluar";
+        $_SESSION['pesan'] = "Berhasil Memproses Tiket Keluar";
         $_SESSION['kode_pesan'] = "success";
         header("location:index.php?page=add_tiket");
     } else {

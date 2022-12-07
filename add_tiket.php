@@ -199,7 +199,7 @@
                   <div class="form-group row">
                     <label for="jenis_kendaraan" class="col-sm-4 col-form-label">Jenis Kendaraan</label>
                     <div class="col-sm-8">
-                      <select class="form-control select2bs4" style="width:100%; height: 100%;" name="jenis_kendaraan" id="jenis_kendaraan" required>
+                      <select class="form-control select2bs4" style="width:100%; height: 100%;" name="jenis_kendaraan" required>
                         <option selected = "selected" value="">- Pilih Jenis Kendaraan -</option>
                         <?php
                         include "koneksi.php";
@@ -274,28 +274,28 @@
                   <div class="form-group row">
                     <label for="jenis" class="col-sm-4 col-form-label">Jenis Kendaraan</label>
                     <div class="col-sm-8">
-                      <input class="form-control" type="text" id="jenis" placeholder="Jenis Kendaraan" readonly>
+                      <input class="form-control" type="text" id="jenis_kendaraan" placeholder="Jenis Kendaraan" readonly>
                     </div>
                   </div>
                   
                   <div class="form-group row">
                     <label for="jam_masuk_kendaraan" class="col-sm-4 col-form-label">Jam Masuk</label>
                     <div class="col-sm-8">
-                      <input class="form-control" type="datetime-local" id="jam_masuk_kendaraan" placeholder="dd/mm/yyyy hh:mm:ss" readonly>
+                      <input class="form-control" type="datetime-local" name="jam_masuk" id="jam_masuk_kendaraan" step="1" placeholder="dd/mm/yyyy hh:mm:ss" readonly>
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label for="jam_keluar_kendaraan" class="col-sm-4 col-form-label">Jam Keluar</label>
                     <div class="col-sm-8">
-                      <input class="form-control" type="datetime-local" name="jam_keluar" id="jam_keluar_kendaraan" placeholder="dd/mm/yyyy hh:mm:ss" readonly>
+                      <input class="form-control" type="datetime-local" name="jam_keluar" id="jam_keluar_kendaraan" step="1" required>
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label for="durasi" class="col-sm-4 col-form-label">Durasi</label>
                     <div class="col-sm-8">
-                      <input class="form-control" type="time" name="durasi" id="durasi" step="1" readonly>
+                      <input class="form-control" type="text" name="durasi" id="durasi" step="1" readonly>
                     </div>
                   </div>
 
@@ -325,7 +325,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-12">
-                    <a href="export_data.php" type="button" class="btn btn-warning">Print</a>
+                    <a href="export_data.php" type="button" target="_blank" class="btn btn-warning">Print</a>
                     <table id="table_list_tiket" class="table table-bordered table-hover">
                       <thead>
                         <tr>
@@ -344,7 +344,7 @@
                       <?php
                         include ("koneksi.php");
 
-                        $query_list = mysqli_query($mysqli,"select * from trx_parking order by kode_tiket desc");
+                        $query_list = mysqli_query($mysqli,"select * from trx_parking");
 
 
                         if(mysqli_num_rows($query_list) == 0){
@@ -358,7 +358,7 @@
                         <td style="text-align: center; vertical-align: middle;"><?php echo strtoupper($data_list['kode_huruf_awal']." ".$data_list['kode_nomor']." ".$data_list['kode_huruf_akhir']) ?></td>
                         <td style="text-align: center; vertical-align: middle;"><?php if ($data_list['jam_masuk'] == '0000-00-00 00:00:00') {echo "-";} else {echo $data_list['jam_masuk']; } ?></td>
                         <td style="text-align: center; vertical-align: middle;"><?php if ($data_list['jam_keluar'] == '0000-00-00 00:00:00') {echo "-";} else {echo $data_list['jam_keluar']; } ?></td>
-                        <td style="text-align: center; vertical-align: middle;"><?php if ($data_list['durasi'] == '00:00:00') {echo "-";} else {echo $data_list['durasi']; } ?></td>
+                        <td style="text-align: center; vertical-align: middle;"><?php if ($data_list['durasi'] == '') {echo "-";} else {echo $data_list['durasi']; } ?></td>
                         <td style="text-align: center; vertical-align: middle;"><?php if ($data_list['tarif_parkir'] == 0) {echo "-";} else {echo rupiah($data_list['tarif_parkir']); } ?></td>
                         <td style="text-align: center; vertical-align: middle;">
                           <div class="btn-group">
@@ -369,13 +369,15 @@
                               <button type="button" class="btn dropdown-item" title="Detail Tiket" data-toggle="modal" data-target="#modal-lg-detail-<?php echo $data_list['kode_tiket'] ?>">Detail
                               </button>
 
-                              <?php if ($data_list['status'] == 1) { ?>
-                                <button type="button" class="btn dropdown-item" title="Update Tiket" data-toggle="modal" data-target="#modal-edit-<?php echo $data_list['kode_tiket'] ?>">Update
-                                </button>
-                                
+                              <?php if ($data_list['status'] == 0) { ?>
                                 <a href='index.php?page=delete_tiket&kode_tiket=<?php echo $data_list['kode_tiket'] ?>'><button type="button" class="btn dropdown-item" title="Delete Tiket" onclick="return confirm('Anda Yakin Ingin Hapus Data Tiket Ini ?')">Delete
                                 </button></a>
-                              <?php } else {}?>                              
+                              <?php } else { ?> 
+                                <button type="button" class="btn dropdown-item" title="Update Tiket" data-toggle="modal" data-target="#modal-edit-<?php echo $data_list['kode_tiket'] ?>">Update
+                                </button>
+                                <a href='index.php?page=delete_tiket&kode_tiket=<?php echo $data_list['kode_tiket'] ?>'><button type="button" class="btn dropdown-item" title="Delete Tiket" onclick="return confirm('Anda Yakin Ingin Hapus Data Tiket Ini ?')">Delete
+                                </button></a>
+                              <?php } ?>                          
                             </div>
                           </div>
                         </td>
@@ -579,7 +581,7 @@
                                   <div class="form-group row">
                                     <label for="jenis_kendaraan" class="col-sm-4 col-form-label">Jenis Kendaraan</label>
                                     <div class="col-sm-8">
-                                      <select class="form-control select2bs4" style="width:100%; height: 100%;"  name="jenis_kendaraan" id="jenis_kendaraan" required>
+                                      <select class="form-control select2bs4" style="width:100%; height: 100%;"  name="jenis_kendaraan" required>
                                         <?php if ($data_list['jenis_kendaraan'] == 'Motor') { ?>
                                           <option selected = "selected" value="Motor">- Motor -</option>
                                           <option value="Mobil">Mobil</option>
@@ -719,13 +721,46 @@ function autofill(){
       var json = data,
       obj = JSON.parse(json);
     $('#kode_tiket_keluar').val(obj.kode_tiket);
-    $('#jenis').val(obj.jenis_kendaraan);
+    $('#jenis_kendaraan').val(obj.jenis_kendaraan);
     $('#jam_masuk_kendaraan').val(obj.jam_masuk);
-    $('#jam_keluar_kendaraan').val(obj.jam_keluar);
-    $('#durasi').val(obj.durasi);
     $('#tarif_parkir').val(obj.tarif_parkir);
   })
 }
+</script>
+
+<script type="text/javascript">
+
+
+  $("#jam_keluar_kendaraan").on("change",function(){
+    var jenis_kendaraan   = $('#jenis_kendaraan').val();
+    var jam_keluar        = new Date($(this).val());
+    var jam_masuk         = new Date($('#jam_masuk_kendaraan').val());
+
+    var mdiff = (jam_keluar - jam_masuk);
+    let seconds  = Math.floor(mdiff / 1000);
+    let minutes  = Math.floor(seconds / 60);
+    let hours    = Math.floor(minutes / 60);
+
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+    hours   = hours % 24;
+
+    var durasi = hours + ":" + minutes + ":" + seconds;
+
+    document.getElementById('durasi').value = durasi;
+
+    if (jenis_kendaraan == 'Motor' && hours == 0) {
+        var tarif_parkir = 2000;
+    } else if (jenis_kendaraan == 'Motor' && hours != 0) {
+        var tarif_parkir = hours * 2000;
+    } else if (jenis_kendaraan == 'Mobil' && hours == 0) {
+        var tarif_parkir = 3000;
+    } else {
+      var tarif_parkir = hours * 3000;
+    }
+    
+    document.getElementById('tarif_parkir').value = tarif_parkir;
+  });
 </script>
 
 </body>
