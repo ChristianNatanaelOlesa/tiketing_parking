@@ -68,8 +68,8 @@
   <!-- /.navbar -->
 
   <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
-    <a href="index.php?page=dashboard" class="brand-link">
-      <img src="assets/img/logo-tpp.jpg" alt="Logo Trafoindo" class="brand-image img-circle">
+    <a href="index.php?page=add_tiket" class="brand-link">
+      <img src="assets/img/parking-logo.png" alt="Logo My Parking System" class="brand-image img-circle">
       <span class="brand-text font-weight-light"><font size="4"><b>MY PARKING SYSTEM</b></font></span>
     </a>
 
@@ -81,7 +81,7 @@
           <img src="assets/img/user-image.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="index.php?page=dashboard" class="d-block"><?php echo $_SESSION['nama']; ?></a>
+          <a href="index.php?page=add_tiket" class="d-block"><?php echo $_SESSION['nama']; ?></a>
         </div>
       </div>
 
@@ -137,7 +137,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="index.php?page=dashboard">Home</a></li>
+            <li class="breadcrumb-item"><a href="index.php?page=add_tiket">Home</a></li>
             <li class="breadcrumb-item active"><a href="index.php?page=add_user">Master User</a></li>
             <li class="breadcrumb-item active">Create, Update, Delete</li>
           </ol>
