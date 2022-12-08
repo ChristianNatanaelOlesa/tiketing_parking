@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `trx_parking` (
   `plat_nomor` char(8) NOT NULL,
   `jam_masuk` datetime NOT NULL,
   `jam_keluar` datetime NOT NULL,
-  `durasi` time NOT NULL,
+  `durasi` varchar(50) NOT NULL,
   `tarif_parkir` int(11) NOT NULL,
   `status` int(1) NOT NULL,
   `created_by` varchar(50) NOT NULL,
