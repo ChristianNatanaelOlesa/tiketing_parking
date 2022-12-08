@@ -1,11 +1,9 @@
 <?php
-
 include ("koneksi.php");
 session_start();
 
 date_default_timezone_set('Asia/Jakarta');
 
-// cek apakah tombol simpan sudah diklik atau blum?
 if(isset($_POST['simpan_user'])) {
 
     $id_user    = $_POST['id_user'];
@@ -120,7 +118,7 @@ if(isset($_POST['simpan_user'])) {
 
     $old_tarif           = $mysqli->query("SELECT * FROM ms_tarif_kendaraan WHERE id_tarif_kendaraan = '$id_tarif_kendaraan' ");
     $data_old_tarif      = mysqli_fetch_array($old_tarif);
-    $jmlh_data_old_tarif = mysqli_num_rows($old_kategori);
+    $jmlh_data_old_tarif = mysqli_num_rows($old_tarif);
     
     $result_tarif_kendaraan    = $mysqli->query("SELECT * FROM ms_tarif_kendaraan WHERE jenis_kendaraan = '$jenis_kendaraan' and tarif_kendaraan = '$tarif_kendaraan");
     $r_tarif_kendaraan         = mysqli_fetch_array($result_tarif_kendaraan);
@@ -154,23 +152,32 @@ if(isset($_POST['simpan_user'])) {
     $jam_keluar     = $_POST['jam_keluar'];
     $durasi         = $_POST['durasi'];
     $tarif_parkir   = $_POST['tarif_parkir'];
-    $status         = 0;//STATUS SUDAH KELUAR PARKIRAN
+    $status         = 0; //STATUS SUDAH KELUAR PARKIRAN
     $update_by      = $_SESSION['username'];
     $update_dt      = date('Y-m-d H:i:s');
 
-    $sql_tiket_keluar    = "UPDATE trx_parking SET tarif_parkir='$tarif_parkir', durasi='$durasi', jam_keluar='$jam_keluar', status='$status', update_by='$update_by', update_dt='$update_dt' WHERE kode_tiket = '$kode_tiket' ";
-    $update_tiket_keluar  = mysqli_query($mysqli, $sql_tiket_keluar); 
+    $query_cek_tgl      = $mysqli->query("SELECT * FROM trx_parking WHERE kode_tiket = '$kode_tiket' ");
+    $data_cek_tgl       = mysqli_fetch_array($query_cek_tgl);
+    $jmlh_data_cek_tgl  = mysqli_num_rows($query_cek_tgl);
 
-    if( $update_tiket_keluar ) {
-        $_SESSION['pesan'] = "Berhasil Memproses Tiket Keluar";
-        $_SESSION['kode_pesan'] = "success";
-        header("location:index.php?page=add_tiket");
-    } else {
-        $_SESSION['pesan'] = "Gagal Memproses Tiket Keluar ".$kode_tiket." ".$jam_keluar." ".$durasi." ".$tarif_parkir;
+    if ($jam_keluar < $data_cek_tgl['jam_masuk']) {
+        $_SESSION['pesan'] = "Jam Keluar Tidak Boleh Lebih Kecil Dari Jam Masuk";
         $_SESSION['kode_pesan'] = "warning";
         header("location:index.php?page=add_tiket");
+    } else {
+        $sql_tiket_keluar    = "UPDATE trx_parking SET tarif_parkir='$tarif_parkir', durasi='$durasi', jam_keluar='$jam_keluar', status='$status', update_by='$update_by', update_dt='$update_dt' WHERE kode_tiket = '$kode_tiket' ";
+        $update_tiket_keluar  = mysqli_query($mysqli, $sql_tiket_keluar); 
+
+        if( $update_tiket_keluar ) {
+            $_SESSION['pesan'] = "Berhasil Memproses Tiket Keluar";
+            $_SESSION['kode_pesan'] = "success";
+            header("location:index.php?page=add_tiket");
+        } else {
+            $_SESSION['pesan'] = "Gagal Memproses Tiket Keluar ";
+            $_SESSION['kode_pesan'] = "warning";
+            header("location:index.php?page=add_tiket");
+        }
     }
-    
 
 } else if(isset($_POST['simpan_update_tiket'])){
 
@@ -190,7 +197,7 @@ if(isset($_POST['simpan_user'])) {
     $data_old_platno       = mysqli_fetch_array($old_platno);
     $jmlh_data_old_platno  = mysqli_num_rows($old_platno);
 
-    if ($plat_nomor == $data_old_platno['plat_nomor'] && $_POST['jenis_kendaraan'] == $data_old_katalog['jenis_kendaraan']) { //0000
+    if ($plat_nomor == $data_old_platno['plat_nomor'] && $_POST['jenis_kendaraan'] == $data_old_platno['jenis_kendaraan']) {
 
         $_SESSION['pesan'] = "Tidak Ada Data Yang Di Rubah";
         $_SESSION['kode_pesan'] = "success";
@@ -207,14 +214,11 @@ if(isset($_POST['simpan_user'])) {
                 $edit_plat_nomor    = "UPDATE trx_parking SET plat_nomor='$plat_nomor', kode_huruf_awal='$kode_huruf_awal', kode_nomor='$kode_nomor', kode_huruf_akhir='$kode_huruf_akhir', update_by='$update_by', update_dt='$update_dt' WHERE kode_tiket = '$_POST[kode_tiket]' ";
                 $update_plat_nomor  = mysqli_query($mysqli, $edit_plat_nomor); 
             }
-            
         }
 
         if ($jenis_kendaraan != $data_old_platno['jenis_kendaraan']) { 
             $edit_jenis_kendaraan    = "UPDATE trx_parking SET jenis_kendaraan='$jenis_kendaraan' WHERE kode_tiket = '$_POST[kode_tiket]' ";
             $update_jenis_kendaraan  = mysqli_query($mysqli, $edit_jenis_kendaraan); 
-
-            
         }
 
         if( $update_plat_nomor ||  $update_jenis_kendaraan ) {

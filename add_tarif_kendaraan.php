@@ -73,8 +73,8 @@
   </nav>
 
   <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
-    <a href="index.php?page=dashboard" class="brand-link">
-      <img src="assets/img/logo-tpp.jpg" alt="Logo Trafoindo" class="brand-image img-circle">
+    <a href="index.php?page=add_tiket" class="brand-link">
+      <img src="assets/img/parking-logo.png" alt="Logo My Parking System" class="brand-image img-circle">
       <span class="brand-text font-weight-light"><font size="4"><b>MY PARKING SYSTEM</b></font></span>
     </a>
 
@@ -84,7 +84,7 @@
           <img src="assets/img/user-image.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="index.php?page=dashboard" class="d-block"><?php echo $_SESSION['nama']; ?></a>
+          <a href="index.php?page=add_tiket" class="d-block"><?php echo $_SESSION['nama']; ?></a>
         </div>
       </div>
 
@@ -130,9 +130,7 @@
     </div>
   </aside>
 
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -141,16 +139,15 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="index.php?page=dashboard">Home</a></li>
-              <li class="breadcrumb-item active"><a href="index.php?page=add_katalog">Master Tarif Parkir Kendaraan</a></li>
+              <li class="breadcrumb-item"><a href="index.php?page=add_tiket">Home</a></li>
+              <li class="breadcrumb-item active"><a href="index.php?page=add_tarif_kendaraan">Master Tarif Parkir Kendaraan</a></li>
               <li class="breadcrumb-item active">Create, Update, Delete</li>
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
 
-    <!-- Main content -->
     <section class="content">
     	<div class="container-fluid">
 
@@ -161,7 +158,7 @@
               	<h3 class="card-title">Buat Tarif Kendaraan Baru</h3>
             	</div>
 
-            	<form class="form-horizontal" name="form_katalog" action="index.php?page=create_tarif_kendaraan" method="post" enctype="multipart/form-data">
+            	<form class="form-horizontal" name="form_add_tarif_kendaraan" action="index.php?page=create_tarif_kendaraan" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-6">
@@ -207,7 +204,7 @@
                               <div class="col-md-4">
                                 <div class="form-group">
                                   <label>ID TARIF PARKIR KENDARAAN</label>
-                                  <input type="text" class="form-control" name="id_katalog" placeholder="ID TARIF PARKIR KENDARAAN" value="<?php echo $row['id_tarif_kendaraan'] ?>" readonly>
+                                  <input type="text" class="form-control" name="id_tarif_kendaraan" placeholder="ID TARIF PARKIR KENDARAAN" value="<?php echo $row['id_tarif_kendaraan'] ?>" readonly>
                                 </div>
                               </div>
                             </div>
@@ -238,7 +235,7 @@
                   </div>
                 </div>
 
-                <table id="table_katalog" class="table table-bordered table-striped">
+                <table id="tbl_tarif_kendaraan" class="table table-bordered table-striped">
 
                 <thead>
                   <tr>
@@ -302,7 +299,7 @@
                               <div class="col-md-4">
                                 <div class="form-group">
                                   <label>ID TARIF PARKIR KENDARAAN</label>
-                                  <input type="text" class="form-control" name="id_katalog" placeholder="ID TARIF PARKIR KENDARAAN" value="<?php echo $row['id_tarif_kendaraan'] ?>" readonly>
+                                  <input type="text" class="form-control" name="id_tarif_kendaraan" placeholder="ID TARIF PARKIR KENDARAAN" value="<?php echo $row['id_tarif_kendaraan'] ?>" readonly>
                                 </div>
                               </div>
                             </div>
@@ -349,9 +346,7 @@
 
 	    </div>
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
 
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
@@ -360,13 +355,9 @@
     <strong>Copyright &copy; <?php echo date('Y'); ?> Christian Natanael Olesa, S.Kom, S.Si.</strong> All rights reserved.
   </footer>
 
-  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
   </aside>
-  <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
 
 <!-- jQuery -->
 <script src="assets/plugins/jquery/jquery.min.js"></script>
@@ -421,7 +412,7 @@
 
 <script>
   $(function () {
-    $('#table_katalog').DataTable({
+    $('#tbl_tarif_kendaraan').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": true,

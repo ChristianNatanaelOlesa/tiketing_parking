@@ -21,8 +21,8 @@
 	}
 
 	//REPORT DATA
-	else if ($_GET['page'] == "report_data") { //VIEW
-		include "report_data.php";
+	else if ($_GET['page'] == "export_data") { //VIEW
+		include "export_data.php";
 	}
 
 	else if ($_GET['page']=="print_report") {

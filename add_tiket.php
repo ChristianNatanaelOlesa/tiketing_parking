@@ -96,7 +96,6 @@
   unset($_SESSION['pesan']);
 } ?>
 <div class="wrapper">
-  <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -107,20 +106,18 @@
   </nav>
 
   <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
-    <a href="index.php?page=dashboard" class="brand-link">
-      <img src="assets/img/logo-tpp.jpg" alt="Logo Trafoindo" class="brand-image img-circle">
+    <a href="index.php?page=add_tiket" class="brand-link">
+      <img src="assets/img/parking-logo.png" alt="Logo My Parking System" class="brand-image img-circle">
       <span class="brand-text font-weight-light"><font size="4"><b>MY PARKING SYSTEM</b></font></span>
     </a>
 
-    <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           <img src="assets/img/user-image.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="index.php?page=dashboard" class="d-block"><?php echo $_SESSION['nama']; ?></a>
+          <a href="index.php?page=add_tiket" class="d-block"><?php echo $_SESSION['nama']; ?></a>
         </div>
       </div>
 
@@ -288,7 +285,7 @@
                   <div class="form-group row">
                     <label for="jam_keluar_kendaraan" class="col-sm-4 col-form-label">Jam Keluar</label>
                     <div class="col-sm-8">
-                      <input class="form-control" type="datetime-local" name="jam_keluar" id="jam_keluar_kendaraan" step="1" value="<?php echo $current_time; ?>" required>
+                      <input class="form-control" type="datetime-local" name="jam_keluar" id="jam_keluar_kendaraan" step="1" required>
                     </div>
                   </div>
 
@@ -325,7 +322,134 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-12">
-                    <a href="export_data.php" type="button" target="_blank" class="btn btn-warning">Print</a>
+                    <!-- <button type="button" class="btn btn-warning" title="Print/Export Data to PDF" data-toggle="modal" data-target="#modal-print-data">
+                      Print
+                    </button> -->
+
+                    <a href="index.php?page=export_data" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+
+                    <div class="modal fade" id="modal-print-data">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                           <h4 class="modal-title">PRINT REPORT TIKET</h4>
+                          </div>
+                          <div class="modal-body">
+                            <form class="form-horizontal" name="form_edit_tiket" action="index.php?page=export_data" method="post" enctype="multipart/form-data">
+                              <div class="card-body">
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label>Tanggal Masuk (From)</label>
+                                      <input class="form-control" type="date" name="tgl_masuk_from">
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label>Tanggal Masuk (To)</label>
+                                      <input class="form-control" type="date" name="tgl_masuk_to">
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label>Tanggal Keluar (From)</label>
+                                      <input class="form-control" type="date" name="tgl_keluar_from">
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label>Tanggal Keluar (To)</label>
+                                      <input class="form-control" type="date" name="tgl_keluar_to">
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label>Jenis Kendaraan</label>
+                                      <select class="form-control select2bs4" style="width:100%" name="jenis_kendaraan_search">
+                                        <option selected="selected" value="">- Pilih Jenis Kendaraan -</option>
+                                        <?php
+                                        include "koneksi.php";
+
+                                        $query_jenis      = $mysqli->query("select * FROM ms_tarif_kendaraan");
+                                        $jmlh_data_jenis  = mysqli_num_rows($query_jenis);
+
+                                        while ($data_jenis = mysqli_fetch_array($query_jenis)){
+                                          echo '<option name="jenis_kendaraan_search" value="'.$data_jenis['jenis_kendaraan'].'">'.$data_jenis['jenis_kendaraan'].'</option>';
+                                        }?>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label>Kode Tiket (From)</label>
+                                      <select class="form-control select2bs4" style="width:100%" name="kode_tiket_from">
+                                        <option selected="selected" value="">- Pilih Kode Tiket -</option>
+                                        <?php
+                                        include "koneksi.php";
+
+                                        $query_kode_tiket_f      = $mysqli->query("select * FROM trx_parking order by kode_tiket asc");
+                                        $jmlh_data_kode_tiket_f  = mysqli_num_rows($query_kode_tiket_f);
+
+                                        while ($data_kode_tiket_f = mysqli_fetch_array($query_kode_tiket_f)){
+                                          echo '<option name="kode_tiket_from" value="'.$data_kode_tiket_f['kode_tiket'].'">'.$data_kode_tiket_f['kode_tiket'].'</option>';
+                                        }?>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-3">
+                                    <div class="form-group">
+                                      <label>Kode Tiket (To)</label>
+                                      <select class="form-control select2bs4" style="width:100%" name="kode_tiket_to">
+                                        <option selected="selected" value="">- Pilih Kode Tiket -</option>
+                                        <?php
+                                        include "koneksi.php";
+
+                                        $query_kode_tiket_t      = $mysqli->query("select * FROM trx_parking order by kode_tiket asc");
+                                        $jmlh_data_kode_tiket_t  = mysqli_num_rows($query_kode_tiket_t);
+
+                                        while ($data_kode_tiket_t = mysqli_fetch_array($query_kode_tiket_t)){
+                                          echo '<option name="kode_tiket_to" value="'.$data_kode_tiket_t['kode_tiket'].'">'.$data_kode_tiket_t['kode_tiket'].'</option>';
+                                        }?>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label>Tanggal Pembuatan (From)</label>
+                                      <input class="form-control" type="date" name="tgl_pembuatan_from">
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label>Tanggal Pembuatan (To)</label>
+                                      <input class="form-control" type="date" name="tgl_pembuatan_to">
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </div>
+                              <div class="card-footer">
+                                <button type="submit" class="btn btn-info">Print</button>
+                              </div>  
+                            </form>  
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <table id="table_list_tiket" class="table table-bordered table-hover">
                       <thead>
                         <tr>
@@ -761,6 +885,18 @@ function autofill(){
     
     document.getElementById('tarif_parkir').value = tarif_parkir;
   });
+</script>
+
+<script>
+$(document).ready(function(){
+    $("#jam_keluar_kendaraan").attr('disabled', 'disabled');
+
+    $('#plat_nomor').on('change', function(){
+        $("#jam_keluar_kendaraan").removeAttr('disabled');
+    });
+
+    
+});
 </script>
 
 </body>
