@@ -20,16 +20,7 @@
 		include "delete_master.php";
 	}
 
-	//REPORT DATA
-	else if ($_GET['page'] == "export_data") { //VIEW
-		include "export_data.php";
-	}
-
-	else if ($_GET['page']=="print_report") {
-		include "print_report.php";
-	}
-
-	//HALAMAN MASTER DATA - TARIF PARKIR
+	//HALAMAN MASTER DATA - TARIF PARKIR KENDARAAN
 	else if ($_GET['page']=="add_tarif_kendaraan") {
 		include "add_tarif_kendaraan.php";
 	}
@@ -45,8 +36,10 @@
 	else if ($_GET['page']=="delete_tarif_kendaraan") {
 		include "delete_master.php";
 	}
+
 	
-	//HALAMAN NEW TIKET
+	
+	//HALAMAN FORM TIKETING
 
 	else if ($_GET['page']=="add_tiket") {
 		include "add_tiket.php";
@@ -67,6 +60,10 @@
 	else if ($_GET['page']=="delete_tiket") {
 		include "delete_master.php";
 	}
+
+	else if ($_GET['page'] == "export_data") {
+		include "export_data.php";
+	}	
 
 	else{
 		include "login.php";
