@@ -23,7 +23,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Parking System</title>
+  <title>My Parking System</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="assets/link/fonts.googleapis.css">

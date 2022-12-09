@@ -70,33 +70,7 @@
           </button>
         </div>
       </form>
-      <table id="table_list_tiket" class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th style="text-align: center; vertical-align: middle;">Username</th>
-            <th style="text-align: center; vertical-align: middle;">Password</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            include ("koneksi.php");
-
-            $sql=mysqli_query($mysqli,"select * FROM login order by nama asc");
-
-            if(mysqli_num_rows($sql) == 0){
-              echo '<tr><td colspan="6" style="text-align: center">Tidak Ada Data.</td></tr>';
-            }else{
-              $no = 1;
-              while($row = mysqli_fetch_assoc($sql)){
-          ?>
-          <tr>
-            <td style="text-align:center;"><?php echo $row['username'] ?></td>
-            <td style="text-align:center;"><?php echo md5($row['password']) ?></td>
-          </tr>
-        <?php }
-        } ?>
-        </tbody>
-      </table>
+      
     </div>
   </div>
   

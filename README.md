@@ -1,6 +1,10 @@
 # tiketing_parking
  Aplikasi "My Parking System" untuk keperluan soal test interview kerja PT. Maskapai Reasuransi Indonesia Tbk
 
+ LOGIN INFO
+ Username = admin
+ Password = admin
+
  HALAMAN MASTER USER (Master Data > User)
  - Digunakan untuk input user baru
  - Terdapat 4 Inputan (Nama Lengkap, Username, Password, dan Level)
