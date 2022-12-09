@@ -123,15 +123,8 @@
         </table>
       </div>
     </div>
-    <br>
-
-
-    <!-- /.row -->
   </div>
-  <!-- /.content -->
 </div>
-<!-- ./wrapper -->
-<!-- Page specific script -->
 <script>
   window.addEventListener("load", window.print());
 </script>

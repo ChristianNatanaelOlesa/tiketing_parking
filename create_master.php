@@ -9,7 +9,9 @@ if(isset($_POST['submit_user'])){
 	
 	$username			= $_POST['username'];
 	$password 			= md5($_POST['password']);
-	$nama				= $_POST['nama'];
+	$password2 			= $_POST['password'];
+
+	$nama				= ucfirst($_POST['nama']);
 	$level				= $_POST['level'];
 	$status				= 1;
     $created_dt			= date('Y-m-d H:i:s');
@@ -23,7 +25,7 @@ if(isset($_POST['submit_user'])){
 		$_SESSION['kode_pesan'] = "warning";
 		header("location:index.php?page=add_user");
 	} else {
-		$sql = "INSERT INTO login (username, password, nama, level, status) VALUES ('$username', '$password', '$nama', '$level', '$status')";
+		$sql = "INSERT INTO login (username, password, password2, nama, level, status) VALUES ('$username', '$password', '$password2', '$nama', '$level', '$status')";
 		$query = mysqli_query($mysqli, $sql);
 	}
 
@@ -76,7 +78,7 @@ if(isset($_POST['submit_user'])){
     $kode_huruf_akhir 	= strtoupper($_POST['kode_huruf_akhir']);
     $plat_nomor			= $kode_huruf_awal.$kode_nomor.$kode_huruf_akhir;
 
-    $jam_masuk			= $_POST['jam_masuk'];
+    $jam_masuk			= date('Y-m-d H:i:s');
     $status 			= 1;
     $created_by 		= $_SESSION['username'];
     $created_dt 		= date('Y-m-d H:i:s');

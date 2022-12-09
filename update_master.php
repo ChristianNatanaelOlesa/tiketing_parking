@@ -9,8 +9,9 @@ if(isset($_POST['simpan_user'])) {
     $id_user    = $_POST['id_user'];
     $password1  = md5($_POST['password1']);
     $password2  = md5($_POST['password2']);
+    $pass  = $_POST['password1'];
     $username   = $_POST['username'];
-    $nama       = $_POST['nama'];
+    $nama       = ucfirst($_POST['nama']);
     $level      = $_POST['level'];
     $status     = $_POST['status'];
 
@@ -27,14 +28,18 @@ if(isset($_POST['simpan_user'])) {
     $jmlh_data_nama = mysqli_num_rows($result_nama);
 
     if ($_POST['username'] == $data_old_user['username'] && $_POST['nama'] == $data_old_user['nama'] && $_POST['level'] == $data_old_user['level'] && $_POST['status'] == $data_old_user['status'] ) {
-        echo "<script>alert('Tidak ada data yang berubah');window.location.href='index.php?page=add_user'</script>";
+        $_SESSION['pesan'] = "Tidak ada data yang berubah";
+        $_SESSION['kode_pesan'] = "warning";
+        header("location:index.php?page=add_user");
     }  else {
 
         if($_POST['password1'] == ''){
 
             if ($_POST['nama'] != $data_old_user['nama']) {
                 if ($jmlh_data_nama > 0) {
-                    echo "<script>alert('Nama Sudah Ada');</script>";
+                    $_SESSION['pesan'] = "Nama sudah ada";
+                    $_SESSION['kode_pesan'] = "warning";
+                    header("location:index.php?page=add_user");
                 } else {
                     $sql_nama   = "UPDATE login SET nama='$nama' WHERE id_user = '$_POST[id_user]' ";
                     $query_nama = mysqli_query($mysqli, $sql_nama);
@@ -43,7 +48,9 @@ if(isset($_POST['simpan_user'])) {
 
             if ($_POST['username'] != $data_old_user['username']) {
                 if ($jmlh_data_username > 0) {
-                    echo "<script>alert('Username Sudah Ada');</script>";
+                    $_SESSION['pesan'] = "Username sudah ada";
+                    $_SESSION['kode_pesan'] = "warning";
+                    header("location:index.php?page=add_user");
                 } else {
                     $sql_username   = "UPDATE login SET username='$username' WHERE id_user = '$_POST[id_user]' ";
                     $query_username = mysqli_query($mysqli, $sql_username);
@@ -64,7 +71,9 @@ if(isset($_POST['simpan_user'])) {
 
             if ($_POST['nama'] != $data_old_user['nama']) {
                 if ($jmlh_data_nama > 0) {
-                    echo "<script>alert('Nama Sudah Ada');</script>";
+                    $_SESSION['pesan'] = "Nama sudah ada";
+                    $_SESSION['kode_pesan'] = "warning";
+                    header("location:index.php?page=add_user");
                 } else {
                     $sql_nama   = "UPDATE login SET nama='$nama' WHERE id_user = '$_POST[id_user]' ";
                     $query_nama = mysqli_query($mysqli, $sql_nama);
@@ -73,7 +82,9 @@ if(isset($_POST['simpan_user'])) {
 
             if ($_POST['username'] != $data_old_user['username']) {
                 if ($jmlh_data_username > 0) {
-                    echo "<script>alert('Username Sudah Ada');</script>";
+                    $_SESSION['pesan'] = "Username sudah ada";
+                    $_SESSION['kode_pesan'] = "warning";
+                    header("location:index.php?page=add_user");
                 } else {
                     $sql_username   = "UPDATE login SET username='$username' WHERE id_user = '$_POST[id_user]' ";
                     $query_username = mysqli_query($mysqli, $sql_username);
@@ -81,11 +92,12 @@ if(isset($_POST['simpan_user'])) {
             }
 
             if ($_POST['password1'] != $_POST['password2']) {
-                echo "<script>alert('Password tidak sama');</script>";
+                $_SESSION['pesan'] = "Password tidak sama";
+                $_SESSION['kode_pesan'] = "warning";
+                header("location:index.php?page=add_user");
             } else {
-                $sql_password   = "UPDATE login SET password='$password1' WHERE id_user = '$_POST[id_user]' ";
+                $sql_password   = "UPDATE login SET password='$password1', pass='$pass' WHERE id_user = '$_POST[id_user]' ";
                 $query_password = mysqli_query($mysqli, $sql_password);
-                echo "<script>alert('Password berhasil di rubah');</script>";
             }
 
             if ($_POST['level'] != $data_old_user['level']) {
@@ -99,7 +111,7 @@ if(isset($_POST['simpan_user'])) {
             }
         }
 
-        if ($query_nama || $query_username || $query_level || $query_status) {
+        if ($query_nama || $query_username || $query_username || $query_level || $query_status) {
             $_SESSION['pesan'] = "Data User Berhasil Di Rubah";
             $_SESSION['kode_pesan'] = "success";
             header("location:index.php?page=add_user");
@@ -120,7 +132,7 @@ if(isset($_POST['simpan_user'])) {
     $data_old_tarif      = mysqli_fetch_array($old_tarif);
     $jmlh_data_old_tarif = mysqli_num_rows($old_tarif);
     
-    $result_tarif_kendaraan    = $mysqli->query("SELECT * FROM ms_tarif_kendaraan WHERE jenis_kendaraan = '$jenis_kendaraan' and tarif_kendaraan = '$tarif_kendaraan");
+    $result_tarif_kendaraan    = $mysqli->query("SELECT * FROM ms_tarif_kendaraan WHERE jenis_kendaraan = '$jenis_kendaraan' and tarif_kendaraan = '$tarif_kendaraan' ");
     $r_tarif_kendaraan         = mysqli_fetch_array($result_tarif_kendaraan);
     $jmlh_data_tarif_kendaraan = mysqli_num_rows($result_tarif_kendaraan);
 
@@ -134,19 +146,26 @@ if(isset($_POST['simpan_user'])) {
             $_SESSION['kode_pesan'] = "warning";
             header("location:index.php?page=add_tarif_kendaraan");
         } else {
-            $sql = "UPDATE ms_tarif_kendaraan SET jenis_kendaraan='$_POST[jenis_kendaraan]', tarif_kendaraan='$_POST[tarif_kendaraan]', WHERE id_tarif_kendaraan = '$id_tarif_kendaraan' ";
+            $sql = "UPDATE ms_tarif_kendaraan SET jenis_kendaraan='$_POST[jenis_kendaraan]', tarif_kendaraan='$_POST[tarif_kendaraan]' WHERE id_tarif_kendaraan = '$id_tarif_kendaraan' ";
             $query = mysqli_query($mysqli, $sql);
 
             // apakah query simpan berhasil?
             if( $query ) {
                 $_SESSION['pesan'] = "Tarif Kendaraan Berhasil Di Rubah";
-                $_SESSION['kode_pesan'] = "warning";
+                $_SESSION['kode_pesan'] = "success";
                 header("location:index.php?page=add_tarif_kendaraan");
             }
         }
     }
 
 } else if(isset($_POST['simpan_tiket_keluar'])){
+
+    function rupiah($angka){
+  
+        $hasil_rupiah = "Rp " . number_format($angka,2,',','.');
+        return $hasil_rupiah;
+
+    }
 
     $kode_tiket     = $_POST['kode_tiket'];
     $jam_keluar     = $_POST['jam_keluar'];
@@ -169,7 +188,7 @@ if(isset($_POST['simpan_user'])) {
         $update_tiket_keluar  = mysqli_query($mysqli, $sql_tiket_keluar); 
 
         if( $update_tiket_keluar ) {
-            $_SESSION['pesan'] = "Berhasil Memproses Tiket Keluar";
+            $_SESSION['pesan'] = "Tiket Keluar Berhasil Di Proses Dengan Tarif Parkir : ".rupiah($tarif_parkir);
             $_SESSION['kode_pesan'] = "success";
             header("location:index.php?page=add_tiket");
         } else {
@@ -231,7 +250,7 @@ if(isset($_POST['simpan_user'])) {
 } else {
     $_SESSION['pesan'] = "Akses Dilarang";
     $_SESSION['kode_pesan'] = "warning";
-    header("location:index.php?page=add_trx");
+    header("location:index.php?page=add_tiket");
 }
 
 ?>

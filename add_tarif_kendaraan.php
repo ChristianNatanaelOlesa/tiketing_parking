@@ -130,21 +130,13 @@
     </div>
   </aside>
 
-<div class="content-wrapper">
+  <div class="content-wrapper">
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>MASTER TARIF PARKIR KENDARAAN</h1>
+          <div class="col-sm-12">
+            <center><font size="7" color="black"><b>APLIKASI MY PARKING SYSTEM</b></font></center>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="index.php?page=add_tiket">Home</a></li>
-              <li class="breadcrumb-item active"><a href="index.php?page=add_tarif_kendaraan">Master Tarif Parkir Kendaraan</a></li>
-              <li class="breadcrumb-item active">Create, Update, Delete</li>
-            </ol>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -155,7 +147,7 @@
         	<div class="col-md-6">
             <div class="card card-primary">
             	<div class="card-header">
-              	<h3 class="card-title">Buat Tarif Kendaraan Baru</h3>
+              	<h3 class="card-title"><b>Form Tambah Tarif Kendaraan & Jenis Kendaraan</b></h3>
             	</div>
 
             	<form class="form-horizontal" name="form_add_tarif_kendaraan" action="index.php?page=create_tarif_kendaraan" method="post" enctype="multipart/form-data">
@@ -188,53 +180,6 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-body">
-                <div class="modal fade" id="modal-list-tiket">
-                  <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h4 class="modal-title">Report Data Tiket Parkir</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <form action="index.php?page=export_data" method="post" class="form-horizontal">
-                          <div class="card-body">
-                            <div class="row" hidden>
-                              <div class="col-md-4">
-                                <div class="form-group">
-                                  <label>ID TARIF PARKIR KENDARAAN</label>
-                                  <input type="text" class="form-control" name="id_tarif_kendaraan" placeholder="ID TARIF PARKIR KENDARAAN" value="<?php echo $row['id_tarif_kendaraan'] ?>" readonly>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="row">
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label>Jenis Kendaraan</label>
-                                  <input type="text" class="form-control" name="jenis_kendaraan" placeholder="Jenis Kendaraan" value="<?php echo $row['jenis_kendaraan'] ?>" required>
-                                </div>
-                              </div>
-
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label>Tarif Parkir Per Jam</label>
-                                  <input type="number" class="form-control" name="tarif_kendaraan" min="1000" value="<?php echo $row['tarif_kendaraan'] ?>" placeholder="Tarif Parkir Per Jam" required>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="card-footer">
-                            <button type="submit" name="simpan_tarif_kendaraan" class="btn btn-primary">Update</button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 <table id="tbl_tarif_kendaraan" class="table table-bordered table-striped">
 
                 <thead>
@@ -284,7 +229,7 @@
                 </tr>
 
                 <div class="modal fade" id="modal-lg-edit-<?php echo $row['id_tarif_kendaraan'] ?>">
-                  <div class="modal-dialog modal-lg">
+                  <div class="modal-dialog modal-md">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h4 class="modal-title">Edit Tarif Parkir Kendaraan</h4>
@@ -293,7 +238,7 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                        <form class="form-horizontal" name="form_edit_tarif_kendaraan" action="index.php?page=edit_tarif_parkir_kendaraan" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal" name="form_edit_tarif_kendaraan" action="index.php?page=edit_tarif_kendaraan" method="post" enctype="multipart/form-data">
                           <div class="card-body">
                             <div class="row" hidden>
                               <div class="col-md-4">
@@ -370,19 +315,10 @@
 <script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="assets/plugins/jszip/jszip.min.js"></script>
-<script src="assets/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="assets/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- AdminLTE App -->
 <script src="assets/dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="assets/dist/js/demo.js"></script>
-
 
 <!-- Select2 -->
 <script src="assets/plugins/select2/js/select2.full.min.js"></script>

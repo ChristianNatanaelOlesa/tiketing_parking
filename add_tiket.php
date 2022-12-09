@@ -3,7 +3,6 @@
 
   date_default_timezone_set('Asia/Jakarta');
 
-  // cek apakah yang mengakses halaman ini sudah login
   if($_SESSION['username']==""){
     echo "<div class='alert'>Username dan Password tidak sesuai !</div>";
   }
@@ -43,6 +42,65 @@
     return $hasil_rupiah;
    
   }
+
+  function tgl_indo($tanggal){
+    $bulan = array (
+      1 =>   'Januari',
+      'Februari',
+      'Maret',
+      'April',
+      'Mei',
+      'Juni',
+      'Juli',
+      'Agustus',
+      'September',
+      'Oktober',
+      'November',
+      'Desember'
+    );
+    $pecahkan = explode('-', $tanggal);
+   
+    return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+  }
+
+  function hari_ini(){
+  $hari = date ("D");
+ 
+  switch($hari){
+    case 'Sun':
+      $hari_ini = "Minggu";
+    break;
+ 
+    case 'Mon':     
+      $hari_ini = "Senin";
+    break;
+ 
+    case 'Tue':
+      $hari_ini = "Selasa";
+    break;
+ 
+    case 'Wed':
+      $hari_ini = "Rabu";
+    break;
+ 
+    case 'Thu':
+      $hari_ini = "Kamis";
+    break;
+ 
+    case 'Fri':
+      $hari_ini = "Jumat";
+    break;
+ 
+    case 'Sat':
+      $hari_ini = "Sabtu";
+    break;
+    
+    default:
+      $hari_ini = "Tidak di ketahui";   
+    break;
+  }
+  return "<b>" . $hari_ini . "</b>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -151,7 +209,7 @@
           <li class="nav-item">
             <a href="index.php?page=add_tiket" class="nav-link active">
               <i class="nav-icon fa-solid fa-square-plus"></i>
-              <p>New Tiket</p>
+              <p>Form Tiketing</p>
             </a>
           </li>
 
@@ -167,146 +225,148 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Form Tiket Masuk</h1>
+          <div class="col-sm-12">
+            <center><font size="7" color="black"><b>APLIKASI MY PARKING SYSTEM</b></font></center>
+            <center><font size="6" color="red"><b><?php echo hari_ini(); ?>, <?php echo tgl_indo(date('Y-m-d')); ?> <span id="jam"></span></b></font></center>
           </div>
-
-          <div class="col-sm-6">
-            <h1>Form Tiket Keluar</h1>
-          </div>
-        </div>
       </div>
     </section>
 
     <section class="content">
       <div class="row">
         <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <form class="form-horizontal" name="form_tiket_masuk" action="index.php?page=create_tiket_masuk" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                  <div class="form-group row">
-                    <label for="kode_tiket" class="col-sm-4 col-form-label">Kode Tiket</label>
-                    <div class="col-sm-8">
-                      <input class="form-control" type="text" name="kode_tiket" id="kode_tiket" placeholder="Kode Tiket" value="<?php echo $kode_tiket; ?>" readonly>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="jenis_kendaraan" class="col-sm-4 col-form-label">Jenis Kendaraan</label>
-                    <div class="col-sm-8">
-                      <select class="form-control select2bs4" style="width:100%; height: 100%;" name="jenis_kendaraan" required>
-                        <option selected = "selected" value="">- Pilih Jenis Kendaraan -</option>
-                        <?php
-                        include "koneksi.php";
-
-                        $query_jenis_kendaraan  = $mysqli->query("select * FROM ms_tarif_kendaraan order by id_tarif_kendaraan asc");
-                        $jmlh_jenis_kendaraan   = mysqli_num_rows($query_jenis_kendaraan);
-
-                        while ($data_jenis_kendaraan = mysqli_fetch_array($query_jenis_kendaraan)){
-                          echo '<option name="jenis_kendaraan" value="'.$data_jenis_kendaraan['jenis_kendaraan'].'">'.$data_jenis_kendaraan['jenis_kendaraan'].'</option>';
-                        }?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Plat Nomor</label>
-                    <div class="col-sm-2">
-                      <input class="form-control" type="text" style="text-transform: uppercase;" name="kode_huruf_awal" id="kode_huruf_awal" onkeypress="return hanyaHuruf(event)" maxlength="1" required>
-                    </div>
-                    <div class="col-sm-4">
-                      <input class="form-control" type="text" name="kode_nomor" id="kode_nomor" onkeypress="return hanyaAngka(event)" maxlength="4" required>
-                    </div>
-                    <div class="col-sm-2">
-                      <input class="form-control" type="text" style="text-transform: uppercase;" name="kode_huruf_akhir" id="kode_huruf_akhir" onkeypress="return hanyaHuruf(event)" minlength="1" maxlength="3" required>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="jam_masuk" class="col-sm-4 col-form-label">Jam Masuk</label>
-                    <div class="col-sm-8">
-                      <input class="form-control" type="datetime-local" name="jam_masuk" id="jam_masuk" step="1" value="<?php echo $current_time; ?>" readonly>
-                    </div>
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title"><b>FORM TIKETING MASUK</b></h3>
+            </div>
+            <form class="form-horizontal" name="form_tiket_masuk" action="index.php?page=create_tiket_masuk" method="post" enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="form-group row">
+                  <label for="kode_tiket" class="col-sm-5 col-form-label">Kode Tiket</label>
+                  <div class="col-sm-7">
+                    <input class="form-control" type="text" name="kode_tiket" id="kode_tiket" placeholder="Kode Tiket" value="<?php echo $kode_tiket; ?>" readonly>
                   </div>
                 </div>
-                <div class="card-footer">
-                  <button type="submit" name="submit_tiket_masuk" class="btn btn-info">Save</button>
-                  <button type="reset" class="btn btn-default float-right">Cancel</button>
-                </div>  
-              </form>       
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">Jenis Kendaraan</label>
+                  <div class="col-sm-7">
+                    <select class="form-control select2bs4" name="jenis_kendaraan" id="jenis_kendaraan_masuk" required>
+                      <option selected = "selected" value="">- Pilih Jenis Kendaraan -</option>
+                      <?php
+                      include "koneksi.php";
+
+                      $query_jenis_kendaraan  = $mysqli->query("select * FROM ms_tarif_kendaraan order by id_tarif_kendaraan asc");
+
+                      while ($data_jenis_kendaraan = mysqli_fetch_array($query_jenis_kendaraan)){
+                        echo '<option name="jenis_kendaraan" value="'.$data_jenis_kendaraan['jenis_kendaraan'].'">'.$data_jenis_kendaraan['jenis_kendaraan'].'</option>';
+                      }?>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-5 col-form-label">Plat Nomor</label>
+                  <div class="col-sm-2">
+                    <input class="form-control" type="text" style="text-transform: uppercase; text-align: center;" name="kode_huruf_awal" id="kode_huruf_awal" onkeypress="return hanyaHuruf(event)" maxlength="1" required>
+                  </div>
+                  <div class="col-sm-3">
+                    <input class="form-control" type="text" style="text-align: center;" name="kode_nomor" id="kode_nomor" onkeypress="return hanyaAngka(event)" maxlength="4" required>
+                  </div>
+                  <div class="col-sm-2">
+                    <input class="form-control" type="text" style="text-transform: uppercase; text-align: center;" name="kode_huruf_akhir" id="kode_huruf_akhir" onkeypress="return hanyaHuruf(event)" minlength="1" maxlength="3" required>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <button type="submit" name="submit_tiket_masuk" class="btn btn-info">Save</button>
+                <button type="button" class="btn btn-default float-right" id="reset_tiket_masuk">Cancel</button>
+              </div>  
+            </form>       
+          </div>
+          <div class="card card-outline card-danger">
+            <div class="card-header">
+              <h3 class="card-title"> <font color="red"><b>KETERANGAN :</b></font></h3>
+            </div>
+            <div class="card-body">
+               <font size="3" color="black"><b>- Saat kendaraan sudah keluar parkir data tiket</b></font><font size="3" color="red"><b> TIDAK DAPAT DI EDIT</b></font><br> 
+               <font size="3" color="black"><b>- Tombol "Cancel" berfungsi untuk me reset form</b><br></font>
+               <font size="3" color="black"><b>- Jam Masuk otomatis akan mengikuti jam di sistem</b><br></font>
+               <font size="3" color="black"><b>- Tombol "Update" dan "Delete" (dropdown menu) ada di kolom action</b><br></font>
             </div>
           </div>
         </div>
 
         <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <form class="form-horizontal" name="form_tiket_keluar" action="index.php?page=update_tiket_keluar" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                  <div class="form-group row">
-                    <label for="plat_nomor" class="col-sm-4 col-form-label">Plat Nomor</label>
-                    <div class="col-sm-8">
-                      <select class="form-control select2bs4" id="plat_nomor" onchange="autofill(this.value)" required>
-                        <option selected="selected" value="">- Pilih Plat Nomor -</option>
-                        <?php
-                        include "koneksi.php";
+          <div class="card card-warning">
+            <div class="card-header">
+              <h3 class="card-title"><b>FORM TIKETING KELUAR</b></h3>
+            </div>
+            <form class="form-horizontal" name="form_tiket_keluar" action="index.php?page=update_tiket_keluar" method="post" enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Plat Nomor</label>
+                  <div class="col-sm-8">
+                    <select class="form-control select2bs4" id="plat_nomor_keluar" onchange="autofill(this.value)" required>
+                      <option selected="selected" value="">- Pilih Plat Nomor -</option>
+                      <?php
+                      include "koneksi.php";
 
-                        $query_tiket      = $mysqli->query("select * FROM trx_parking WHERE status = 1");
-                        $jmlh_data_tiket  = mysqli_num_rows($query_tiket);
+                      $query_tiket      = $mysqli->query("select * FROM trx_parking WHERE status = 1");
+                      $jmlh_data_tiket  = mysqli_num_rows($query_tiket);
 
-                        while ($data_tiket = mysqli_fetch_array($query_tiket)){
-                          echo '<option name="plat_nomor" value="'.$data_tiket['plat_nomor'].'">'.$data_tiket['kode_huruf_awal'].' '.$data_tiket['kode_nomor'].' '.$data_tiket['kode_huruf_akhir'].'</option>';
-                        }?>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="kode_tiket_keluar" class="col-sm-4 col-form-label">Kode Tiket</label>
-                    <div class="col-sm-8">
-                      <input class="form-control" type="text" name="kode_tiket" id="kode_tiket_keluar" placeholder="Kode Tiket" readonly>
-                    </div>
-                  </div>
-                  
-                  <div class="form-group row">
-                    <label for="jenis" class="col-sm-4 col-form-label">Jenis Kendaraan</label>
-                    <div class="col-sm-8">
-                      <input class="form-control" type="text" id="jenis_kendaraan" placeholder="Jenis Kendaraan" readonly>
-                    </div>
-                  </div>
-                  
-                  <div class="form-group row">
-                    <label for="jam_masuk_kendaraan" class="col-sm-4 col-form-label">Jam Masuk</label>
-                    <div class="col-sm-8">
-                      <input class="form-control" type="datetime-local" name="jam_masuk" id="jam_masuk_kendaraan" step="1" placeholder="dd/mm/yyyy hh:mm:ss" readonly>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="jam_keluar_kendaraan" class="col-sm-4 col-form-label">Jam Keluar</label>
-                    <div class="col-sm-8">
-                      <input class="form-control" type="datetime-local" name="jam_keluar" id="jam_keluar_kendaraan" step="1" required>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="durasi" class="col-sm-4 col-form-label">Durasi</label>
-                    <div class="col-sm-8">
-                      <input class="form-control" type="text" name="durasi" id="durasi" step="1" readonly>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label for="tarif_parkir" class="col-sm-4 col-form-label">Tarif Parkir</label>
-                    <div class="col-sm-8">
-                      <input class="form-control" type="number" name="tarif_parkir" id="tarif_parkir" readonly>
-                    </div>
+                      while ($data_tiket = mysqli_fetch_array($query_tiket)){
+                        echo '<option name="plat_nomor" value="'.$data_tiket['plat_nomor'].'">'.$data_tiket['kode_huruf_awal'].' '.$data_tiket['kode_nomor'].' '.$data_tiket['kode_huruf_akhir'].'</option>';
+                      }?>
+                    </select>
                   </div>
                 </div>
-                <div class="card-footer">
-                  <button type="submit" name="simpan_tiket_keluar" class="btn btn-info">Save</button>
-                  <button type="reset" class="btn btn-default float-right">Cancel</button>
-                </div>  
-              </form>       
-            </div>
+
+                <div class="form-group row">
+                  <label for="kode_tiket_keluar" class="col-sm-4 col-form-label">Kode Tiket</label>
+                  <div class="col-sm-8">
+                    <input class="form-control" type="text" name="kode_tiket" id="kode_tiket_keluar" placeholder="Kode Tiket" readonly>
+                  </div>
+                </div>
+                
+                <div class="form-group row">
+                  <label for="jenis" class="col-sm-4 col-form-label">Jenis Kendaraan</label>
+                  <div class="col-sm-8">
+                    <input class="form-control" type="text" id="jenis_kendaraan_keluar" placeholder="Jenis Kendaraan" readonly>
+                  </div>
+                </div>
+                
+                <div class="form-group row">
+                  <label for="jam_masuk_kendaraan" class="col-sm-4 col-form-label">Jam Masuk</label>
+                  <div class="col-sm-8">
+                    <input class="form-control" type="datetime-local" name="jam_masuk" id="jam_masuk_kendaraan" step="1" placeholder="dd/mm/yyyy hh:mm:ss" readonly>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="jam_keluar_kendaraan" class="col-sm-4 col-form-label">Jam Keluar</label>
+                  <div class="col-sm-8">
+                    <input class="form-control" type="datetime-local" name="jam_keluar" id="jam_keluar_kendaraan" step="1" required>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="durasi" class="col-sm-4 col-form-label">Durasi</label>
+                  <div class="col-sm-8">
+                    <input class="form-control" type="text" name="durasi" id="durasi" step="1" readonly>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="tarif_parkir" class="col-sm-4 col-form-label">Tarif Parkir</label>
+                  <div class="col-sm-8">
+                    <input class="form-control" type="number" name="tarif_parkir" id="tarif_parkir" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <button type="submit" name="simpan_tiket_keluar" class="btn btn-warning">Save</button>
+                <button type="button" id="reset_tiket_keluar" class="btn btn-default float-right">Cancel</button>
+              </div>  
+            </form>       
           </div>
         </div>
       </div>
@@ -319,135 +379,17 @@
             <div class="card">
               <div class="card-body">
                 <div class="row">
+                  <div class="col-sm-12">
+                    <center><font size="5" color="blue"><b>LIST DATA TIKET PARKIR</b></font></center>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
                   <div class="col-12">
-                    <!-- <button type="button" class="btn btn-warning" title="Print/Export Data to PDF" data-toggle="modal" data-target="#modal-print-data">
-                      Print
-                    </button> -->
 
-                    <a href="index.php?page=export_data" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                    <a href="index.php?page=export_data" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a><br>
+                    <font><b>Record Count : <?php echo $jmlh_data_trx ?></b></font>
 
-                    <div class="modal fade" id="modal-print-data">
-                      <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                           <h4 class="modal-title">PRINT REPORT TIKET</h4>
-                          </div>
-                          <div class="modal-body">
-                            <form class="form-horizontal" name="form_edit_tiket" action="index.php?page=export_data" method="post" enctype="multipart/form-data">
-                              <div class="card-body">
-                                <div class="row">
-                                  <div class="col-sm-6">
-                                    <div class="form-group">
-                                      <label>Tanggal Masuk (From)</label>
-                                      <input class="form-control" type="date" name="tgl_masuk_from">
-                                    </div>
-                                  </div>
-
-                                  <div class="col-sm-6">
-                                    <div class="form-group">
-                                      <label>Tanggal Masuk (To)</label>
-                                      <input class="form-control" type="date" name="tgl_masuk_to">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-sm-6">
-                                    <div class="form-group">
-                                      <label>Tanggal Keluar (From)</label>
-                                      <input class="form-control" type="date" name="tgl_keluar_from">
-                                    </div>
-                                  </div>
-
-                                  <div class="col-sm-6">
-                                    <div class="form-group">
-                                      <label>Tanggal Keluar (To)</label>
-                                      <input class="form-control" type="date" name="tgl_keluar_to">
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-md-6">
-                                    <div class="form-group">
-                                      <label>Jenis Kendaraan</label>
-                                      <select class="form-control select2bs4" style="width:100%" name="jenis_kendaraan_search">
-                                        <option selected="selected" value="">- Pilih Jenis Kendaraan -</option>
-                                        <?php
-                                        include "koneksi.php";
-
-                                        $query_jenis      = $mysqli->query("select * FROM ms_tarif_kendaraan");
-                                        $jmlh_data_jenis  = mysqli_num_rows($query_jenis);
-
-                                        while ($data_jenis = mysqli_fetch_array($query_jenis)){
-                                          echo '<option name="jenis_kendaraan_search" value="'.$data_jenis['jenis_kendaraan'].'">'.$data_jenis['jenis_kendaraan'].'</option>';
-                                        }?>
-                                      </select>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-3">
-                                    <div class="form-group">
-                                      <label>Kode Tiket (From)</label>
-                                      <select class="form-control select2bs4" style="width:100%" name="kode_tiket_from">
-                                        <option selected="selected" value="">- Pilih Kode Tiket -</option>
-                                        <?php
-                                        include "koneksi.php";
-
-                                        $query_kode_tiket_f      = $mysqli->query("select * FROM trx_parking order by kode_tiket asc");
-                                        $jmlh_data_kode_tiket_f  = mysqli_num_rows($query_kode_tiket_f);
-
-                                        while ($data_kode_tiket_f = mysqli_fetch_array($query_kode_tiket_f)){
-                                          echo '<option name="kode_tiket_from" value="'.$data_kode_tiket_f['kode_tiket'].'">'.$data_kode_tiket_f['kode_tiket'].'</option>';
-                                        }?>
-                                      </select>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-3">
-                                    <div class="form-group">
-                                      <label>Kode Tiket (To)</label>
-                                      <select class="form-control select2bs4" style="width:100%" name="kode_tiket_to">
-                                        <option selected="selected" value="">- Pilih Kode Tiket -</option>
-                                        <?php
-                                        include "koneksi.php";
-
-                                        $query_kode_tiket_t      = $mysqli->query("select * FROM trx_parking order by kode_tiket asc");
-                                        $jmlh_data_kode_tiket_t  = mysqli_num_rows($query_kode_tiket_t);
-
-                                        while ($data_kode_tiket_t = mysqli_fetch_array($query_kode_tiket_t)){
-                                          echo '<option name="kode_tiket_to" value="'.$data_kode_tiket_t['kode_tiket'].'">'.$data_kode_tiket_t['kode_tiket'].'</option>';
-                                        }?>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-sm-6">
-                                    <div class="form-group">
-                                      <label>Tanggal Pembuatan (From)</label>
-                                      <input class="form-control" type="date" name="tgl_pembuatan_from">
-                                    </div>
-                                  </div>
-
-                                  <div class="col-sm-6">
-                                    <div class="form-group">
-                                      <label>Tanggal Pembuatan (To)</label>
-                                      <input class="form-control" type="date" name="tgl_pembuatan_to">
-                                    </div>
-                                  </div>
-                                </div>
-
-                              </div>
-                              <div class="card-footer">
-                                <button type="submit" class="btn btn-info">Print</button>
-                              </div>  
-                            </form>  
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                     <table id="table_list_tiket" class="table table-bordered table-hover">
                       <thead>
                         <tr>
@@ -531,7 +473,7 @@
                                   </div>
                                   <div class="col-md-9">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<font size="3"><b><?php if ($data_list['status'] != 0) {
-                                          echo '<font size="3">Kendaraan Masih Di Parkir</font>';
+                                          echo '<font size="3">Kendaraan Masih Di Dalam Parkiran</font>';
                                         } else {
                                           echo '<font size="3">Kendaraan Sudah Keluar Parkiran</font>';
                                         }?></b></font> 
@@ -610,7 +552,7 @@
                                       </div>
                                       <div class="col-md-9">
                                         :&nbsp;&nbsp;
-                                        <?php if ($data_list['durasi'] != '00:00:00') {
+                                        <?php if ($data_list['durasi'] != '') {
                                           echo '<font size="3">'.$data_list['durasi'].'</font>';
                                         } else {
                                           echo '<font size="3"> - </font>';
@@ -724,7 +666,7 @@
 
                                 </div>
                                 <div class="card-footer">
-                                  <button type="submit" name="simpan_update_tiket" class="btn btn-info">Save</button>
+                                  <button type="submit" name="simpan_update_tiket" class="btn btn-primary">Save</button>
                                 </div>  
                               </form>  
                             </div>
@@ -778,6 +720,27 @@
 <!-- AdminLTE for demo purposes -->
 <script src="assets/dist/js/demo.js"></script>
 
+<script type="text/javascript">
+  window.onload = function() { jam(); }
+ 
+  function jam() {
+      var e = document.getElementById('jam'),
+      d = new Date(), h, m, s;
+      h = d.getHours();
+      m = set(d.getMinutes());
+      s = set(d.getSeconds());
+ 
+      e.innerHTML = h +':'+ m +':'+ s;
+ 
+      setTimeout('jam()', 1000);
+  }
+ 
+  function set(e) {
+      e = e < 10 ? '0'+ e : e;
+      return e;
+  }
+</script>
+
 <script>
   function hanyaAngka(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode
@@ -808,7 +771,7 @@
           searchable: false,
           targets: [2,3,7]
         }],
-      "order": [[ 7 ]],
+      "order": [[0, "desc"]],
         columnDefs: [{
           orderable: false,
           targets: "no-sort"
@@ -822,10 +785,8 @@
 
 <script>
   $(function () {
-    //Initialize Select2 Elements
     $('.select2').select2()
 
-    //Initialize Select2 Elements
     $('.select2bs4').select2({
       theme: 'bootstrap4'
     })
@@ -835,7 +796,7 @@
 
 <script type="text/javascript">
 function autofill(){
-  var plat_nomor = $("#plat_nomor").val();
+  var plat_nomor = $("#plat_nomor_keluar").val();
   $.ajax({
     url : 'autofill.php', // file proses penginputan
     data : "plat_nomor="+plat_nomor,
@@ -843,7 +804,7 @@ function autofill(){
       var json = data,
       obj = JSON.parse(json);
     $('#kode_tiket_keluar').val(obj.kode_tiket);
-    $('#jenis_kendaraan').val(obj.jenis_kendaraan);
+    $('#jenis_kendaraan_keluar').val(obj.jenis_kendaraan);
     $('#jam_masuk_kendaraan').val(obj.jam_masuk);
     $('#tarif_parkir').val(obj.tarif_parkir);
   })
@@ -854,7 +815,7 @@ function autofill(){
 
 
   $("#jam_keluar_kendaraan").on("change",function(){
-    var jenis_kendaraan   = $('#jenis_kendaraan').val();
+    var jenis_kendaraan   = $('#jenis_kendaraan_keluar').val();
     var jam_keluar        = new Date($(this).val());
     var jam_masuk         = new Date($('#jam_masuk_kendaraan').val());
 
@@ -863,11 +824,11 @@ function autofill(){
     let minutes  = Math.floor(seconds / 60);
     let hours    = Math.floor(minutes / 60);
 
-    seconds = seconds % 60;
-    minutes = minutes % 60;
-    hours   = hours % 24;
+    detik = seconds % 60;
+    menit = minutes % 60;
+    jam   = hours % 24;
 
-    var durasi = hours + ":" + minutes + ":" + seconds;
+    var durasi = hours + ":" + menit + ":" + detik;
 
     document.getElementById('durasi').value = durasi;
 
@@ -889,12 +850,46 @@ function autofill(){
 $(document).ready(function(){
     $("#jam_keluar_kendaraan").attr('disabled', 'disabled');
 
-    $('#plat_nomor').on('change', function(){
+    $('#plat_nomor_keluar').on('change', function(){
+      var platNo = $(this).val(); 
+      if (platNo == ''){
+        document.getElementById('kode_tiket_keluar').value= "";
+        document.getElementById('jenis_kendaraan_keluar').value = "";
+        document.getElementById('jam_masuk_kendaraan').value = "";
+        document.getElementById('jam_keluar_kendaraan').value = "";
+        document.getElementById('durasi').value = "";
+        document.getElementById('tarif_parkir').value = "";
+        $("#jam_keluar_kendaraan").attr("disabled","disabled");
+      } else if (platNo != '') {
+        document.getElementById('jam_keluar_kendaraan').value = "";
+        document.getElementById('durasi').value = "";
+        document.getElementById('tarif_parkir').value = "";
         $("#jam_keluar_kendaraan").removeAttr('disabled');
+      }
+    });    
+});
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#reset_tiket_masuk').on('click', function(){
+      $("#jenis_kendaraan_masuk").select().val([""]).trigger("change");
+      document.getElementById('kode_huruf_awal').value = "";
+      document.getElementById('kode_nomor').value = "";
+      document.getElementById('kode_huruf_akhir').value = "";
+    });
+    $('#reset_tiket_keluar').on('click', function(){
+        $("#plat_nomor_keluar").select().val([""]).trigger("change");
+        document.getElementById('kode_tiket_keluar').value= "";
+        document.getElementById('jenis_kendaraan_keluar').value = "";
+        document.getElementById('jam_masuk_kendaraan').value = "";
+        document.getElementById('jam_keluar_kendaraan').value = "";
+        document.getElementById('durasi').value = "";
+        document.getElementById('tarif_parkir').value = "";
+        $("#jam_keluar_kendaraan").attr("disabled","disabled");
     });
 
-    
-});
+  });
 </script>
 
 </body>

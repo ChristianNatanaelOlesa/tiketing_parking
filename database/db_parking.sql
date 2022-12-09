@@ -1,50 +1,78 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               10.4.22-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win64
--- HeidiSQL Version:             12.2.0.6576
--- --------------------------------------------------------
+-- phpMyAdmin SQL Dump
+-- version 5.1.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 09 Des 2022 pada 14.04
+-- Versi server: 10.4.22-MariaDB
+-- Versi PHP: 7.4.28
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `db_parking`
+--
 
--- Dumping database structure for db_parking
-CREATE DATABASE IF NOT EXISTS `db_parking` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-USE `db_parking`;
+-- --------------------------------------------------------
 
--- Dumping structure for table db_parking.login
-CREATE TABLE IF NOT EXISTS `login` (
-  `id_user` int(11) NOT NULL AUTO_INCREMENT,
+--
+-- Struktur dari tabel `login`
+--
+
+CREATE TABLE `login` (
+  `id_user` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL,
+  `password2` varchar(50) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `level` int(1) NOT NULL,
   `status` int(1) NOT NULL,
-  `created_dt` datetime NOT NULL,
-  PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+  `created_dt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
+-- Dumping data untuk tabel `login`
+--
 
--- Dumping structure for table db_parking.ms_tarif_kendaraan
-CREATE TABLE IF NOT EXISTS `ms_tarif_kendaraan` (
-  `id_tarif_kendaraan` int(11) NOT NULL AUTO_INCREMENT,
+INSERT INTO `login` (`id_user`, `username`, `password`, `password2`, `nama`, `level`, `status`, `created_dt`) VALUES
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'Superadmin', 0, 1, '0000-00-00 00:00:00'),
+(2, 'staff', '1253208465b1efa876f982d8a9e73eef', 'staff', 'Staff Tiketing', 1, 1, '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `ms_tarif_kendaraan`
+--
+
+CREATE TABLE `ms_tarif_kendaraan` (
+  `id_tarif_kendaraan` int(11) NOT NULL,
   `jenis_kendaraan` varchar(50) NOT NULL,
-  `tarif_kendaraan` int(11) NOT NULL,
-  PRIMARY KEY (`id_tarif_kendaraan`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  `tarif_kendaraan` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
+-- Dumping data untuk tabel `ms_tarif_kendaraan`
+--
 
--- Dumping structure for table db_parking.trx_parking
-CREATE TABLE IF NOT EXISTS `trx_parking` (
+INSERT INTO `ms_tarif_kendaraan` (`id_tarif_kendaraan`, `jenis_kendaraan`, `tarif_kendaraan`) VALUES
+(1, 'Motor', 2000),
+(2, 'Mobil', 3000);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `trx_parking`
+--
+
+CREATE TABLE `trx_parking` (
   `kode_tiket` varchar(50) NOT NULL,
   `jenis_kendaraan` varchar(50) NOT NULL,
   `kode_huruf_awal` char(1) NOT NULL,
@@ -59,14 +87,48 @@ CREATE TABLE IF NOT EXISTS `trx_parking` (
   `created_by` varchar(50) NOT NULL,
   `created_dt` datetime NOT NULL,
   `update_by` varchar(50) NOT NULL,
-  `update_dt` datetime NOT NULL,
-  PRIMARY KEY (`kode_tiket`)
+  `update_dt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
+-- Indexes for dumped tables
+--
 
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+--
+-- Indeks untuk tabel `login`
+--
+ALTER TABLE `login`
+  ADD PRIMARY KEY (`id_user`);
+
+--
+-- Indeks untuk tabel `ms_tarif_kendaraan`
+--
+ALTER TABLE `ms_tarif_kendaraan`
+  ADD PRIMARY KEY (`id_tarif_kendaraan`) USING BTREE;
+
+--
+-- Indeks untuk tabel `trx_parking`
+--
+ALTER TABLE `trx_parking`
+  ADD PRIMARY KEY (`kode_tiket`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `login`
+--
+ALTER TABLE `login`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `ms_tarif_kendaraan`
+--
+ALTER TABLE `ms_tarif_kendaraan`
+  MODIFY `id_tarif_kendaraan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
